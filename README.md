@@ -6,7 +6,7 @@ Thomas Jonas & Florian Weber
 
 ## Aufgaben:
 
-> Entwicklung mit **arc42-Template** dokumentieren
+> Entwicklung mit [**arc42-Template**](https://arc42.org/overview) dokumentieren
 > 
 > Ableitung des Vortrags
 > 

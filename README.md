@@ -1,19 +1,30 @@
 # Migration einer monolithischen Architektur auf Microservices
 ## Semesterprojekt
 
-Thomas Jonas & Florian Weber
+Florian Weber & Thomas Jonas
 
 
-## Aufgaben:
+### Aufgaben
 
-> Entwicklung mit **arc42-Template** dokumentieren
-> 
-> Ableitung des Vortrags
-> 
-> (Abgabe hiervon nicht erforderlich)
+> Entwicklung mit **arc42-Template** dokumentieren -> Zur Abbleitung des Vortrags
+
+**ORGA**
+
+- [x] Initialles Planning
+- [ ] Einteilung in Unteraufgaben & TODOs formulieren. 
+  - (Potentiel ein wenig asynchron arbeiten moeglich)
+  - Orientierung an **Umsetzung der Aufgabenblaetter**
+- [ ] Erstelle arc42 template [docs](./docs/arc42/)
+- [ ] Extraktion relevanter Kriterien aus Papern.
 
 
-Umsetzung der [Aufgabenblaetter](/literatur/): 
+**TODOs**
+
+- [ ] Extrahiere wiederverwendbare Komponenten aus urspruenglichem Projekt
+- [ ] ...
+
+
+**Umsetzung der [Aufgabenblaetter](/literatur/):**
 
 - [ ] **4: Modellierung MS Architektur**
 - [ ] **5: Umsetzung Microservices**
@@ -24,7 +35,7 @@ Umsetzung der [Aufgabenblaetter](/literatur/):
 
     Ergebnisse (JSON/XML) in Datenbank (PostgreSQL) ablegen.
 
-Praesentation: (20 min)
+**Praesentation: (20 min)**
 
 - [ ] Fachliche Anforderung (Use Cases)
 - [ ] Software-Architektur - 4-Sichtenmodell
@@ -35,8 +46,28 @@ Praesentation: (20 min)
 - [ ] Fazit: Lessons Learned, Ausblick, aktuelle Restriktionen
 
 
-
-## weitere Infos
+### weitere Infos
 
 - **Bis 10.09** Thema und Gruppe mitteilen -> Alda
 - **Sprechstunde** Do 12-14 Uhr (außer: 01.08. bis 25.8.23) 
+
+
+## Projekt Struktur
+
+Beispielhaft:
+
+- kafka_stream_visualizer: Kafka Visualisierung aus Florians Bachelorarbeit
+- microservice_architecture: Microservice-Migration der WirSchaffenDas Ausgangsarchitektur
+- kafka
+- (docker)
+
+*Um den Ueberblick zu behalten*
+
+## Projekt Setup
+
+- Requirements zum Ausfuehren. zb Java Version
+- Installationsanleitung. zb. JDK oder Docker
+
+## Deployment
+
+- Wie startet man das Projekt? ggf. Scripte schreiben.

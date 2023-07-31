@@ -1,4 +1,13 @@
 # Migration einer monolithischen Architektur auf Microservices
+
+- [Migration einer monolithischen Architektur auf Microservices](#migration-einer-monolithischen-architektur-auf-microservices)
+  - [Semesterprojekt](#semesterprojekt)
+    - [Aufgaben](#aufgaben)
+    - [weitere Infos](#weitere-infos)
+  - [Projekt Struktur](#projekt-struktur)
+  - [Projekt Setup](#projekt-setup)
+  - [Deployment](#deployment)
+
 ## Semesterprojekt
 
 Florian Weber & Thomas Jonas

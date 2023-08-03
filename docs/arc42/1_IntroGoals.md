@@ -9,18 +9,18 @@
 | Status der Alg.Komp. einsehbar ||
 | Retry einer Alg.Komp moeglich ||
 | Konfiguration des opt. Equipment ueber Eingabe Maske (optional separater MicroService) ||
-| Persistierung der aktuellen Konfiguration im MS ||
+| Persistierung der aktuellen Konfiguration im MS | Im Frontend Service selbst ? Wie funktioniert das wenn der browser neu geladen wird?|
 | Button zum starten der Analyse ||
-| Alg. Komp. ueber REST-Endpoint aufrufbar | Lediglich simulation zb 5 sec sleep|
-| Insgesamt 4 verschiedene Alg. Komp. | Clustern der zustaendigkeiten|
+| Alg. Komp. ueber REST-Endpoint aufrufbar | Lediglich simulation zb 5 sec sleep. In unserem Fall sind die AlgKomp Kafka Consumer. REST endpoint fuer status abfrage verfuegbar machen.|
+| Insgesamt 4 verschiedene Alg. Komp. | Clustern der zustaendigkeiten. Jedes Kategorie bildet ein Topic in Kafka|
 | Input der Algorithmen: gesamtes Konfigurationsobject | AnalKomp nehmen sich ihren Teil selbst raus.|
-| Resultat der Analyse speichern & anzeigen.  ok/failed | Zb als Eintrag in das Konfigurations-Objekt. Alternativen denkbar |
+| Resultat der Analyse speichern & anzeigen.  ok/failed | Zb als Eintrag in das Konfigurations-Objekt. Alternativen denkbar: "Resupt" Topic in Kafka, ueber welche die AlgKomp die Resultate liefern. Woher weiß das Frontend dass das Resultat fuer dieses gedacht ist? Sessions? Ist das eine Anforderung?|
 | Status aller AnalKomp zu jedem Zeitpunkt entnehmbar | „running“, „failed“, „ready“, „not started“ |
-| Circuit Breaker Pattern fuer jeden MS | Einzelnen MS sollen zufaelligen Ausfall simulieren. Die Ansprache dieser Komponenten soll ueber den Circuit Breaker (CircBreak) erfolgen. |
-| Einheitliche Schnittstellendefinition der MS ||
+| Circuit Breaker Pattern fuer jeden MS | Einzelnen MS sollen zufaelligen Ausfall simulieren. Die Ansprache dieser Komponenten soll ueber den Circuit Breaker (CircBreak) erfolgen. Dies muss nicht Teil des UI sein. Lediglich ansprache ueber http ermoeglichen.|
 | Benutzeroberflaeche fuer Konfiguration und Start-Button | Technologien: Vaadin|
 | Monitoring | Integration eines Monitoring Frameworks. zb Prometheus. Hier nutzen wir Florians Bachelorarbeit.|
 | Aktuelle Modellierung der Software Architektur 4Sichten Modell | ggf. Aenderunge zu Aufgabe 5 hervorheben.|
+| Einheitliche Schnittstellendefinition der MS ||
 | 5 Loesungen von AntiPatterns & Arch.Smells benennen & 3 in das Projekt einbauen. | |
 
 

@@ -23,14 +23,16 @@ Florian Weber & Thomas Jonas
 - [ ] Einteilung in Unteraufgaben & TODOs formulieren. 
   - (Potentiel ein wenig asynchron arbeiten moeglich)
   - Orientierung an **Umsetzung der Aufgabenblaetter**
-- [ ] Erstelle [arc42](https://arc42.org/overview) template [docs](./docs/arc42/)
+- [x] Erstelle [arc42](https://arc42.org/overview) template [docs](./docs/arc42/)
 - [ ] Extraktion relevanter Kriterien aus Papern.
 
 
 **TODOs**
 
-- [ ] Extrahiere wiederverwendbare Komponenten aus urspruenglichem Projekt
-- [ ] ...
+- [ ] Konfigurationsobject Format definieren (.json)
+- [ ] Schnittstellendefinitionen
+- [ ] Extrahiere wiederverwendbare Komponenten aus urspruenglichem Projekt (Thomas)
+- [ ] Kafka (Florian)
 
 
 **HIGH-LEVEL**

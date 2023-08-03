@@ -17,27 +17,19 @@ Florian Weber & Thomas Jonas
 
 > Entwicklung mit **arc42-Template** dokumentieren -> Zur Abbleitung des Vortrags
 
-**ORGA**
-
-- [x] Initialles Planning
-- [ ] Einteilung in Unteraufgaben & TODOs formulieren. 
-  - (Potentiel ein wenig asynchron arbeiten moeglich)
-  - Orientierung an **Umsetzung der Aufgabenblaetter**
-- [x] Erstelle [arc42](https://arc42.org/overview) template [docs](./docs/arc42/)
-- [ ] Extraktion relevanter Kriterien aus Papern.
-
-
 **TODOs**
 
-- [ ] Konfigurationsobject Format definieren (.json)
-- [ ] Schnittstellendefinitionen
+- [x] Konfigurationsobject Format definieren (.json)
+- [x] Schnittstellendefinitionen
 - [ ] Extrahiere wiederverwendbare Komponenten aus urspruenglichem Projekt (Thomas)
+- [ ] Implementierung der Analyser Komponenten - Java, Notfall Python (Thomas)
 - [ ] Kafka (Florian)
+- [ ] UI + Griechisches Olivenoel(Florian)
 
 
 **HIGH-LEVEL**
 
-- [ ] **4: Modellierung MS Architektur**
+- [x] **4: Modellierung MS Architektur**
 - [ ] **5: Umsetzung Microservices**
 - [ ] **6.1: Erweiterung**
     
@@ -55,6 +47,16 @@ Florian Weber & Thomas Jonas
 - [ ] Code Walkthrough (relevante Passagen vorbereiten)
 - [ ] Demonstration des Prototypen
 - [ ] Fazit: Lessons Learned, Ausblick, aktuelle Restriktionen
+
+**ORGA**
+
+- [x] Initialles Planning
+- [x] Einteilung in Unteraufgaben & TODOs formulieren. 
+  - (Potentiel ein wenig asynchron arbeiten moeglich)
+  - Orientierung an **Umsetzung der Aufgabenblaetter**
+- [x] Erstelle [arc42](https://arc42.org/overview) template [docs](./docs/arc42/)
+- [x] Extraktion relevanter Kriterien aus Papern.
+
 
 
 ### weitere Infos

@@ -25,8 +25,13 @@
 ```py
 {
 "request_id": <client-identifier>,
-"equipment" : {"name": <string>,
-                "result": {ok, failed}}
+"equipment" : {
+    "name": <string>,
+    "result": {ok, failed, running, pending}
+    }
 }
 
 ```
+
+> UI schaltet auf pending sobald submit
+> UI wird ueber running, failed, ok benachrichtigt

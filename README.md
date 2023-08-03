@@ -23,7 +23,7 @@ Florian Weber & Thomas Jonas
 - [ ] Einteilung in Unteraufgaben & TODOs formulieren. 
   - (Potentiel ein wenig asynchron arbeiten moeglich)
   - Orientierung an **Umsetzung der Aufgabenblaetter**
-- [ ] Erstelle arc42 template [docs](./docs/arc42/)
+- [ ] Erstelle [arc42](https://arc42.org/overview) template [docs](./docs/arc42/)
 - [ ] Extraktion relevanter Kriterien aus Papern.
 
 

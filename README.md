@@ -33,7 +33,7 @@ Florian Weber & Thomas Jonas
 - [ ] ...
 
 
-**Umsetzung der [Aufgabenblaetter](/literatur/):**
+**HIGH-LEVEL**
 
 - [ ] **4: Modellierung MS Architektur**
 - [ ] **5: Umsetzung Microservices**

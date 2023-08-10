@@ -7,6 +7,7 @@
   - [Projekt Struktur](#projekt-struktur)
   - [Projekt Setup](#projekt-setup)
   - [Deployment](#deployment)
+  - [Lessons learned](#lessons-learned)
 
 ## Semesterprojekt
 
@@ -84,3 +85,10 @@ Beispielhaft:
 ## Deployment
 
 - Wie startet man das Projekt? ggf. Scripte schreiben.
+
+
+## Lessons learned
+
+- Kotlin-Gradle
+  - REST Server
+  - Data Classes and DB support

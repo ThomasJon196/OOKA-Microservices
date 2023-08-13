@@ -46,7 +46,6 @@ constructor(private val restTemplate: TestRestTemplate) {
 
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
-
         val requestEntity = HttpEntity(configuration, headers)
 
         // When
@@ -63,11 +62,11 @@ constructor(private val restTemplate: TestRestTemplate) {
         Assertions.assertEquals("Received notification", response.body)
     }
 
-	@Test
+    @Test
     fun `test endpoint should return message Hello`() {
-		// When
+        // When
         val response = restTemplate.getForObject("http://localhost:$port/test", String::class.java)
-		// Then
+        // Then
         Assertions.assertEquals("Hello", response)
     }
 }

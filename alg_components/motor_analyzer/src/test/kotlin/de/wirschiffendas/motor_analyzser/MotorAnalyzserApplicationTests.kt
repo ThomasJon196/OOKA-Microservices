@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TutorialRestApiApplicationTests
+class MotorAnalyzserApplicationTests
 @Autowired
 constructor(private val restTemplate: TestRestTemplate) {
 
@@ -69,14 +69,5 @@ constructor(private val restTemplate: TestRestTemplate) {
         val response = restTemplate.getForObject("http://localhost:$port/test", String::class.java)
 		// Then
         Assertions.assertEquals("Hello", response)
-    }
-}
-
-class SampleTest() {
-
-    @Test
-    fun testSum() {
-        val sample = Sample()
-        assert(sample.sum(1, 2) == 3)
     }
 }

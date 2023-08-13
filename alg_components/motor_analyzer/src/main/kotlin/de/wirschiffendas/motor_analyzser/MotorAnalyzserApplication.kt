@@ -21,15 +21,7 @@ class MessageController() {
 
     @PostMapping("/kafkaNotification")
     fun kafkaNotification(@RequestBody configuration: Configuration): ResponseEntity<String> {
-        // val responseMessage = "User created successfully with id: ${user.id}"
 		println("Configuration: $configuration")
         return ResponseEntity("Received notification", HttpStatus.OK)
-    }
-}
-
-class Sample() {
-
-    fun sum(a: Int, b: Int): Int {
-        return a + b
     }
 }

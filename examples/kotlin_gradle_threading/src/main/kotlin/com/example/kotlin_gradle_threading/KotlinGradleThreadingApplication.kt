@@ -5,6 +5,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 
 // @SpringBootApplication
 // class KotlinGradleThreadingApplication
@@ -43,4 +44,11 @@ suspend fun fun_1() {
 suspend fun fun_2() {
     delay(1000L)
     println("${Thread.currentThread()} has executed fun_2 (Inner-Routine)")
+}
+
+
+
+suspend fun suspendFunction(): String {
+    delay(1000L)
+    return "Suspended function completed"
 }

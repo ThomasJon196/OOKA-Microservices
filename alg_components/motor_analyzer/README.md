@@ -1,9 +1,35 @@
 # Microservice optional equipment algorithm
 
+## Setup
+
+- Install Java 17
+- Install Gradle 7.2
+- (opt.) Install Docker
+
+```bash
+# Install Gradle Wrapper
+gradle wrapper
+
+# Build executable Jar
+./gradlew bootJar
+```
 
 
+## Deployment
 
+```bash
+# Deploy via java
+java -jar build/libs/motor_analyzer-0.0.1-SNAPSHOT.jar
 
+# Deploy via Docker
+# # Build Docker Image
+docker build -t motor_analyzer -f docker/Dockerfile .
+
+# # Run Docker Image
+docker run -p 8080:8080 motor_analyzer
+```
+
+- Endoint: `http://localhost:8080/test` should be available 
 
 
 

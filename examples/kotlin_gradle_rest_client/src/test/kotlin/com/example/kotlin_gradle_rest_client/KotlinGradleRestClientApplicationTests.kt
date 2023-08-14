@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate
 
 // }
 
+
 class KotlinGradleRestClientApplicationTests {
 
     @Test fun contextLoads() {}

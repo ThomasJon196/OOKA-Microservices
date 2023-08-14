@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import kotlinx.coroutines.runBlocking
 
 @SpringBootApplication class MotorAnalyzserApplication
 
-fun main(args: Array<String>) {
+fun main(args: Array<String>) = runBlocking{
     runApplication<MotorAnalyzserApplication>(*args)
 }
 
@@ -22,6 +23,13 @@ class MessageController() {
     @PostMapping("/kafkaNotification")
     fun kafkaNotification(@RequestBody configuration: Configuration): ResponseEntity<String> {
 		println("Configuration: $configuration")
+
+        // Run analysis
+        val motorAnalyzer = MotorAnalyzer()
+        motorAnalyzer.executeAnalysis()
+
         return ResponseEntity("Received notification", HttpStatus.OK)
     }
 }
+
+

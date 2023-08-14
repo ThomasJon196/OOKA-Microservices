@@ -40,3 +40,7 @@ tasks.withType(KotlinCompile) {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+springBoot {
+  mainClass = 'de.wirschiffendas.motor_analyzser.MotorAnalyzserApplication'
+}

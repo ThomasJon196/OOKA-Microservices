@@ -22,6 +22,11 @@ class MessageController() {
     @PostMapping("/kafkaNotification")
     fun kafkaNotification(@RequestBody configuration: Configuration): ResponseEntity<String> {
 		println("Configuration: $configuration")
+
+        // Run analysis
+        val motorAnalyzer = MotorAnalyzer()
+        motorAnalyzer.executeAnalysis()
+
         return ResponseEntity("Received notification", HttpStatus.OK)
     }
 }

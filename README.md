@@ -22,9 +22,12 @@ Florian Weber & Thomas Jonas
 
 - [x] Konfigurationsobject Format definieren (.json)
 - [x] Schnittstellendefinitionen
-- [ ] Extrahiere wiederverwendbare Komponenten aus urspruenglichem Projekt (Thomas)
-- [ ] Implementierung der Analyser Komponenten - Java, Notfall Python (Thomas)
+- [x] Extrahiere wiederverwendbare Komponenten aus urspruenglichem Projekt (Thomas)
+- [ ] Implementierung der Analyser Komponenten (Thomas)
+  - [ ] Verbindung zu Kafka
+  - [ ] Dummy Logik fuer sinnvolle Equipment Combos
 - [ ] Kafka (Florian)
+- [ ] Circuit Breaker
 - [ ] UI + Griechisches Olivenoel(Florian)
 
 

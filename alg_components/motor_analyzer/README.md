@@ -19,7 +19,7 @@ gradle wrapper
 
 ```bash
 # Deploy via java
-java -jar build/libs/motor_analyzer-0.0.1-SNAPSHOT.jar
+java -jar build/libs/motor_analyzser-0.0.1-SNAPSHOT.jar
 
 # Deploy via Docker
 # # Build Docker Image

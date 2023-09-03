@@ -28,6 +28,97 @@ class KafkaMessanger(val endpoint: String) {
         const val GROUP_ID = "console-consumer-ooka-jonasweber"
     }
 
+    fun produceTestConfig(message: String) {
+        /*
+        topics:
+        ooka_jonasweber_exhaust
+        ooka_jonasweber_liquid
+        ooka_jonasweber_motor
+        ooka_jonasweber_status
+         */
+        // Thread.currentThread().contextClassLoader = null
+
+        val producer = KafkaProducer<String, String>(getKafkaProperties())
+
+        producer.send(ProducerRecord("ooka_jonasweber_motor", message))
+        producer.close()
+    }
+
+    fun produce_statusmessage(requestId: Int, equipmentName: String, status: String) {
+        /*
+        topics:
+        ooka_jonasweber_exhaust
+        ooka_jonasweber_liquid
+        ooka_jonasweber_motor
+        ooka_jonasweber_status
+         */
+        // Thread.currentThread().contextClassLoader = null
+        val config = JSONObject()
+        config.put("request_id", requestId)
+
+        val mapEquipment = HashMap<String, String>()
+        mapEquipment["name"] = equipmentName
+        mapEquipment["result"] = status
+        config.put("equipment", mapEquipment)
+
+        val producer = KafkaProducer<String, String>(getKafkaProperties())
+
+        producer.send(ProducerRecord("ooka_jonasweber_status", config.toString()))
+        producer.close()
+    }
+
+    fun consume(topic: String, routine_func: () -> Unit = {}) {
+        /*
+        Subscribes to Kafka-Topic.
+        Executes func() on every message received.
+         */
+        val consumer = KafkaConsumer<String, String>(getKafkaProperties())
+        consumer.subscribe(listOf(topic))
+
+        logger.info("Starting Kafka consumer.")
+
+        val kafkaConsumerThread = Thread {
+            logger.info("Started Kafka consumer thread.")
+
+            while (true) {
+                val records = consumer.poll(Duration.ofMillis(100))
+                for (record in records) {
+                    logger.info(
+                            "Received message in topic ${record.topic()} with offset ${record.offset()} and value ${record.value()}."
+                    )
+                    routine_func()
+                }
+            }
+        }
+        kafkaConsumerThread.start()
+    }
+
+    fun consume() {
+        // Deprecated
+        val consumer = KafkaConsumer<String, String>(getKafkaProperties())
+        consumer.subscribe(listOf("ooka_jonasweber_motor"))
+
+        logger.info("Starting Kafka consumer.")
+
+        val kafkaConsumerThread = Thread {
+            logger.info("Started Kafka consumer thread.")
+
+            while (true) {
+                val records = consumer.poll(Duration.ofMillis(100))
+                for (record in records) {
+                    logger.info(
+                            "Received message in topic ${record.topic()} with offset ${record.offset()} and value ${record.value()}."
+                    )
+
+                    // Run analysis
+                    // val motorAnalyzer = MotorAnalyzer()
+                    // motorAnalyzer.executeAnalysis()
+                }
+            }
+        }
+        kafkaConsumerThread.start()
+    }
+
     fun sendMessage(topic: String, message: String): String? {
         /*Deprecated method. */
         println("Sending message to $endpoint with topic $topic and message $message")
@@ -47,50 +138,6 @@ class KafkaMessanger(val endpoint: String) {
         props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = Config.VALUE_DESERIALIZER_CLASS
         props[ConsumerConfig.GROUP_ID_CONFIG] = Config.GROUP_ID
         return props
-    }
-
-    fun produce_statusmessage(message: String) {
-        /*
-        topics:
-        ooka_jonasweber_exhaust
-        ooka_jonasweber_liquid
-        ooka_jonasweber_motor
-        ooka_jonasweber_status
-         */
-        // Thread.currentThread().contextClassLoader = null
-
-        val producer = KafkaProducer<String, String>(getKafkaProperties())
-
-        producer.send(ProducerRecord("ooka_jonasweber_status", message))
-        producer.close()
-    }
-
-    fun consume() {
-        val consumer = KafkaConsumer<String, String>(getKafkaProperties())
-        consumer.subscribe(listOf("ooka_jonasweber_motor"))
-
-        logger.info("Starting Kafka consumer.")
-
-        val kafkaConsumerThread = Thread {
-            logger.info("Started Kafka consumer thread.")
-
-            while (true) {
-                val records = consumer.poll(Duration.ofMillis(100))
-                for (record in records) {
-                    logger.info(
-                            "Received message in topic ${record.topic()} with offset ${record.offset()} and value ${record.value()}."
-                    )
-                    
-                    // Run analysis
-                    val motorAnalyzer = MotorAnalyzer()
-                    motorAnalyzer.executeAnalysis()
-                    // println("Consumed message.")
-                    // println("offset = ${record.offset()}, key = ${record.key()}, value =
-                    // ${record.value()}")
-                }
-            }
-        }
-        kafkaConsumerThread.start()
     }
 
     fun buildKafkaResponse(requestId: Int, equipmentName: String, equipmentStatus: String): String {

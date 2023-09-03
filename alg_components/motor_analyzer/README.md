@@ -4,6 +4,7 @@
 
 - Install Java 17
 - Install Gradle 7.2
+- Setup VPN connection for Kafka access. (Endpoint currently hardcoded inside `KafkaMessanger.kt`)
 - (opt.) Install Docker
 
 ```bash

@@ -25,24 +25,26 @@ class MessageController() {
 
     @GetMapping("/healthCheck") fun test() = "I am alive!"
 
-    @GetMapping("/startProducingKafka")
+    @GetMapping("/simulateNewConfig")
     fun startProducingKafka(): ResponseEntity<String> {
         logger.info("Started Kafka producer.")
     
 
         val kafkaMessanger = KafkaMessanger("")
         val message = kafkaMessanger.buildKafkaResponse(123, "equipmentName", "equipmentStatus")
-        kafkaMessanger.produce_statusmessage(message)
+        kafkaMessanger.produceTestConfig(message)
 
         return ResponseEntity("Kafka Producer executed.", HttpStatus.OK)
     }
 
     @GetMapping("/startConsumingKafka")
     fun startConsumingKafka(): ResponseEntity<String> {
-        logger.info("Starting kafka consumer.")
+        logger.info("Starting kafka consumer.")    
 
         val kafkaMessanger = KafkaMessanger("")
-        kafkaMessanger.consume()
+
+        val motorAnalyzer = MotorAnalyzer({ requestId, equipmentName, status -> kafkaMessanger.produce_statusmessage(requestId, equipmentName, status) })
+        kafkaMessanger.consume(topic = "ooka_jonasweber_motor") { motorAnalyzer.executeAnalysis() }
 
         return ResponseEntity("Kafka Consumer running.", HttpStatus.OK)
     }

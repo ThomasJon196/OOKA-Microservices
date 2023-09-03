@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 @SpringBootApplication class MotorAnalyzserApplication
 
 fun main(args: Array<String>) {
@@ -17,16 +20,33 @@ fun main(args: Array<String>) {
 
 @RestController
 class MessageController() {
-    @GetMapping("/test") fun test() = "Hello"
+    val logger: Logger = LoggerFactory.getLogger(MessageController::class.java)
 
-    @PostMapping("/kafkaNotification")
-    fun kafkaNotification(@RequestBody configuration: Configuration): ResponseEntity<String> {
-		println("Configuration: $configuration")
 
-        // Run analysis
-        val motorAnalyzer = MotorAnalyzer()
-        motorAnalyzer.executeAnalysis()
+    @GetMapping("/healthCheck") fun test() = "I am alive!"
 
-        return ResponseEntity("Received notification", HttpStatus.OK)
+    @GetMapping("/startProducingKafka")
+    fun startProducingKafka(): ResponseEntity<String> {
+        logger.info("Started Kafka producer.")
+    
+
+        val kafkaMessanger = KafkaMessanger("")
+        val message = kafkaMessanger.buildKafkaResponse(123, "equipmentName", "equipmentStatus")
+        kafkaMessanger.produce_statusmessage(message)
+
+        return ResponseEntity("Kafka Producer executed.", HttpStatus.OK)
+    }
+
+    @GetMapping("/startConsumingKafka")
+    fun startConsumingKafka(): ResponseEntity<String> {
+        logger.info("Starting kafka consumer.")
+
+        val kafkaMessanger = KafkaMessanger("")
+        kafkaMessanger.consume()
+
+        return ResponseEntity("Kafka Consumer running.", HttpStatus.OK)
     }
 }
+
+
+

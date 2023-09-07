@@ -27,6 +27,15 @@ Florian Weber & Thomas Jonas
 - [x] Kafka (Florian)
 - [ ] UI + Griechisches Olivenoel(Florian)
 - [ ] Diskutieren: Crnkovic Komponentenmodell Framework anwenden?
+- [ ] Arch Smell und Anti Pattern: 5 priorisierte, davon 3 umgesetzte Loesungen aufzeigen
+  - Erste Sammlung:
+    - Independent deployability
+    - Isolation of failures
+    - Decentralization of business logic
+    - Wrong Cut: Design Anti Pattern
+    - Nano Services
+    - Shared libraries (something we have with our 3 split, good for discussion)
+    - Health check endpoint (UI regulary checks if services are up ? Is it necessary when using kafka?)
 
 
 **HIGH-LEVEL**

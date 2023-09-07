@@ -10,12 +10,10 @@ import org.slf4j.LoggerFactory
 
 class MotorAnalyzer(status_notification_fun: (id:Int, String, String) -> Unit) {
     val status_notification_fun = status_notification_fun
-    var status: Status = Status.PENDING
     val logger: Logger = LoggerFactory.getLogger(KafkaMessanger::class.java)
 
+    // Execute analysis for each equipment in parallel via coroutines
     fun executeAnalysis() = runBlocking {
-        status = Status.RUNNING
-
         logger.info("Executing analysis...")
 
         val gearboxAnalyzer = GearboxAnalyzer()
@@ -23,29 +21,27 @@ class MotorAnalyzer(status_notification_fun: (id:Int, String, String) -> Unit) {
         val startingSystemAnalyzer = StartingSystemAnalyzer()
 
         launch(Dispatchers.Default) {
+            status_notification_fun(123,"GEARBOX",Status.RUNNING.toString())
             gearboxAnalyzer.executeAnalysis()
-            status_notification_fun(123,"gearboxAnalyzer",startingSystemAnalyzer.status.toString())
+            status_notification_fun(123, "GEARBOX", gearboxAnalyzer.status.toString())
         }
 
         launch(Dispatchers.Default) {
+            status_notification_fun(123,"ENGINE",Status.RUNNING.toString())
             engineAnalyzer.executeAnalysis()
-            status_notification_fun(123,"engineAnalyzer",startingSystemAnalyzer.status.toString())
+            status_notification_fun(123,"ENGINE",startingSystemAnalyzer.status.toString())
         }
 
         launch(Dispatchers.Default) {
+            status_notification_fun(123,"STARTING_SYSTEM",Status.RUNNING.toString())
             startingSystemAnalyzer.executeAnalysis()
-            status_notification_fun(123,"startingSystem",startingSystemAnalyzer.status.toString())
+            status_notification_fun(123,"STARTING_SYSTEM",startingSystemAnalyzer.status.toString())
         }
-
-        // Send status to Kafka
-        // kafkaTemplate.send("topic", status)
-
-        status = Status.PENDING
     }
 }
 
 class GearboxAnalyzer {
-    var status: Status = Status.PENDING
+    var status: Status = Status.NOT_STARTED
 
     suspend fun executeAnalysis() {
         status = Status.RUNNING
@@ -55,32 +51,22 @@ class GearboxAnalyzer {
 }
 
 class EngineAnalyzer {
-    var status: Status = Status.RUNNING
+    var status: Status = Status.NOT_STARTED
 
     suspend fun executeAnalysis() {
         status = Status.RUNNING
 
         status = randomlyFail()
-
-        // Send status to Kafka
-        // kafkaTemplate.send("topic", status)
-
-        status = Status.PENDING
     }
 }
 
 class StartingSystemAnalyzer {
-    var status: Status = Status.RUNNING
+    var status: Status = Status.NOT_STARTED
 
     suspend fun executeAnalysis() {
         status = Status.RUNNING
 
         status = randomlyFail()
-
-        // Send status to Kafka
-        // kafkaTemplate.send("topic", status)
-
-        status = Status.PENDING
     }
 }
 
@@ -95,7 +81,7 @@ suspend fun randomlyFail(): Status {
     } else {
         println("Not triggered! (80% probability)")
 
-        return Status.OK
+        return Status.SUCCESS
     }
 }
 

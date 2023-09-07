@@ -26,6 +26,7 @@ Florian Weber & Thomas Jonas
 - [x] Implementierung der Analyser Komponenten - Java, Notfall Python (Thomas)
 - [x] Kafka (Florian)
 - [ ] UI + Griechisches Olivenoel(Florian)
+- [ ] Diskutieren: Crnkovic Komponentenmodell Framework anwenden?
 
 
 **HIGH-LEVEL**

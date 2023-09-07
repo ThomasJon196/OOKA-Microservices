@@ -33,6 +33,23 @@ docker run -p 8080:8080 motor_analyzer
 - Endoint: `http://localhost:8080/test` should be available 
 
 
+## Usage
+
+> Requires connection to Kafka (currently HBRS VPN)
+
+```bash
+# Check if server is running
+curl localhost:8080/healthCheck
+
+# Start Kafka Consumer
+curl localhost:8080/startConsumingKafka
+
+# Simulate Kafka Topic
+curl localhost:8080/simulateNewConfig
+```
+
+Debugging via Server logs. (Client wont display any data.)
+
 
 ## Sources:
 

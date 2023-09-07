@@ -27,7 +27,7 @@
 "request_id": <client-identifier>,
 "equipment" : {
     "name": <string>,
-    "result": {ok, failed, running, pending}
+    "result": {RUNNING,FAILED,NOT_STARTED,SUCCESS}
     }
 }
 

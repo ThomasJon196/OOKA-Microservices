@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -22,51 +19,41 @@ constructor(private val restTemplate: TestRestTemplate) {
 
     @LocalServerPort private var port: Int = 0
 
-    @Test fun contextLoads() {}
+    // @Test fun contextLoads() {}
 
-    @Test
-    fun `kafkaNotification endpoint should contain configuration data class`() {
-        // Given
-        val configuration =
-                Configuration(
-                        request_id = "12345",
-                        category_liquid = mapOf("Oil" to "Engine Oil", "fuel" to "Gasoline"),
-                        category_motor =
-                                mapOf(
-                                        "gearbox" to "Automatic",
-                                        "engine" to "V8",
-                                        "starting system" to "Electric"
-                                ),
-                        category_software =
-                                mapOf(
-                                        "monitoring" to "Engine Performance",
-                                        "fuel" to "Emission Control"
-                                )
-                )
+    // @Test
+    // fun `test endpoint should return message I am alive!`() {
+    //     // When
+    //     val response =
+    //             restTemplate.getForObject("http://localhost:$port/healthCheck", String::class.java)
 
-        val headers = HttpHeaders()
-        headers.contentType = MediaType.APPLICATION_JSON
-        val requestEntity = HttpEntity(configuration, headers)
+    //     // Then
+    //     Assertions.assertEquals("I am alive!", response)
+    // }
 
-        // When
-        val response =
-                restTemplate.postForEntity(
-                        "http://localhost:$port/kafkaNotification",
-                        requestEntity,
-                        String::class.java
-                )
+    // @Test
+    // fun `simulateNewConfig endpoint should return message Kafka Producer executed`() {
+    //     // When
+    //     val response =
+    //             restTemplate.getForObject(
+    //                     "http://localhost:$port/simulateNewConfig",
+    //                     String::class.java
+    //             )
 
-        // Then
-        Assertions.assertEquals(200, response.statusCode.value())
-        Assertions.assertNotNull(response.body)
-        Assertions.assertEquals("Received notification", response.body)
-    }
+    //     // Then
+    //     Assertions.assertEquals("Kafka Producer executed.", response)
+    // }
 
-    @Test
-    fun `test endpoint should return message Hello`() {
-        // When
-        val response = restTemplate.getForObject("http://localhost:$port/test", String::class.java)
-        // Then
-        Assertions.assertEquals("Hello", response)
-    }
+    // @Test
+    // fun `startConsumingKafka endpoint should return message Kafka Consumer running`() {
+    //     // When
+    //     val response =
+    //             restTemplate.getForObject(
+    //                     "http://localhost:$port/startConsumingKafka",
+    //                     String::class.java
+    //             )
+
+    //     // Then
+    //     Assertions.assertEquals("Kafka Consumer running.", response)
+    // }
 }

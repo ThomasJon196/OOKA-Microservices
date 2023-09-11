@@ -8,84 +8,117 @@ import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class MotorAnalyzer(status_notification_fun: (id:Int, String, String) -> Unit) {
-    val status_notification_fun = status_notification_fun
-    val logger: Logger = LoggerFactory.getLogger(KafkaMessanger::class.java)
+class MotorAnalyzer(val status_notification_fun: (Int, String, String) -> Unit = { _, _, _ -> }) {
+    val logger: Logger = LoggerFactory.getLogger(MotorAnalyzer::class.java)
 
     // Execute analysis for each equipment in parallel via coroutines
-    fun executeAnalysis() = runBlocking {
+    fun executeAnalysis(configuration: Configuration) = runBlocking {
         logger.info("Executing analysis...")
 
-        val gearboxAnalyzer = GearboxAnalyzer()
-        val engineAnalyzer = EngineAnalyzer()
-        val startingSystemAnalyzer = StartingSystemAnalyzer()
+        val gearboxAnalyzer = GearboxAnalyzer("GEARBOX", status_notification_fun, logger)
+        val engineAnalyzer = EngineAnalyzer("ENGINE", status_notification_fun, logger)
+        val startingSystemAnalyzer =
+                StartingSystemAnalyzer("STARTING_SYSTEM", status_notification_fun, logger)
 
-        launch(Dispatchers.Default) {
-            status_notification_fun(123,"GEARBOX",Status.RUNNING.toString())
-            gearboxAnalyzer.executeAnalysis()
-            status_notification_fun(123, "GEARBOX", gearboxAnalyzer.status.toString())
-        }
+        // Start all analyzers in parallel
+        launch(Dispatchers.Default) { gearboxAnalyzer.executeAnalysis(configuration) }
 
-        launch(Dispatchers.Default) {
-            status_notification_fun(123,"ENGINE",Status.RUNNING.toString())
-            engineAnalyzer.executeAnalysis()
-            status_notification_fun(123,"ENGINE",startingSystemAnalyzer.status.toString())
-        }
+        launch(Dispatchers.Default) { engineAnalyzer.executeAnalysis(configuration) }
 
-        launch(Dispatchers.Default) {
-            status_notification_fun(123,"STARTING_SYSTEM",Status.RUNNING.toString())
-            startingSystemAnalyzer.executeAnalysis()
-            status_notification_fun(123,"STARTING_SYSTEM",startingSystemAnalyzer.status.toString())
-        }
+        launch(Dispatchers.Default) { startingSystemAnalyzer.executeAnalysis(configuration) }
     }
 }
 
-class GearboxAnalyzer {
+class GearboxAnalyzer(
+        val equipmentName: String,
+        val status_notification_fun: (id: Int, equipmentName: String, status: String) -> Unit,
+        val logger: Logger
+) {
+    /* Simulated analyzer. Would contain complex algorithm. */
     var status: Status = Status.NOT_STARTED
 
-    suspend fun executeAnalysis() {
-        status = Status.RUNNING
+    suspend fun updateStatus(configuration: Configuration, newStatus: Status) {
+        val statusString = newStatus.toString()
+        status_notification_fun(configuration.request_id, equipmentName, statusString)
+        status = newStatus
+    }
 
-        status = randomlyFail()
+    suspend fun executeAnalysis(configuration: Configuration) {
+        updateStatus(configuration, Status.RUNNING)
+
+        delay(2000) // Simulate computation time
+
+        if (randomlyFail()) {
+            logger.info("Failed!")
+            updateStatus(configuration, Status.FAILED)
+        } else {
+            logger.info("Success! (70% probability)")
+            updateStatus(configuration, Status.SUCCESS)
+        }
     }
 }
 
-class EngineAnalyzer {
+class EngineAnalyzer(
+        val equipmentName: String,
+        val status_notification_fun: (id: Int, equipmentName: String, status: String) -> Unit,
+        val logger: Logger
+) {
+    /* Simulated analyzer. Would contain complex algorithm. */
     var status: Status = Status.NOT_STARTED
 
-    suspend fun executeAnalysis() {
-        status = Status.RUNNING
+    suspend fun updateStatus(configuration: Configuration, newStatus: Status) {
+        val statusString = newStatus.toString()
+        status_notification_fun(configuration.request_id, equipmentName, statusString)
+        status = newStatus
+    }
 
-        status = randomlyFail()
+    suspend fun executeAnalysis(configuration: Configuration) {
+        updateStatus(configuration, Status.RUNNING)
+
+        delay(2000) // Simulate computation time
+
+        if (randomlyFail()) {
+            logger.info("Failed!")
+            updateStatus(configuration, Status.FAILED)
+        } else {
+            logger.info("Success! (70% probability)")
+            updateStatus(configuration, Status.SUCCESS)
+        }
     }
 }
 
-class StartingSystemAnalyzer {
+class StartingSystemAnalyzer(
+        val equipmentName: String,
+        val status_notification_fun: (id: Int, equipmentName: String, status: String) -> Unit,
+        val logger: Logger
+) {
+    /* Simulated analyzer. Would contain complex algorithm. */
     var status: Status = Status.NOT_STARTED
 
-    suspend fun executeAnalysis() {
-        status = Status.RUNNING
+    suspend fun updateStatus(configuration: Configuration, newStatus: Status) {
+        val statusString = newStatus.toString()
+        status_notification_fun(configuration.request_id, equipmentName, statusString)
+        status = newStatus
+    }
 
-        status = randomlyFail()
+    suspend fun executeAnalysis(configuration: Configuration) {
+        updateStatus(configuration, Status.RUNNING)
+
+        delay(2000) // Simulate computation time
+
+        if (randomlyFail()) {
+            logger.info("Failed!")
+            updateStatus(configuration, Status.FAILED)
+        } else {
+            logger.info("Success! (70% probability)")
+            updateStatus(configuration, Status.SUCCESS)
+        }
     }
 }
 
-suspend fun randomlyFail(): Status {
-    val probability = 0.2 // Fail probability
-    delay(timeMillis = 2000L) // Simulate computation time
+suspend fun randomlyFail(): Boolean {
+    val probability = 0.25 // Fail probability
+    delay(2000) // Simulate computation time
 
-    if (Random.nextDouble() < probability) {
-        println("Triggered! (20% probability)")
-
-        return Status.FAILED
-    } else {
-        println("Not triggered! (80% probability)")
-
-        return Status.SUCCESS
-    }
-}
-
-suspend fun suspendFunction(): String {
-    delay(1000L)
-    return "Suspended function completed"
+    return Random.nextDouble() < probability
 }

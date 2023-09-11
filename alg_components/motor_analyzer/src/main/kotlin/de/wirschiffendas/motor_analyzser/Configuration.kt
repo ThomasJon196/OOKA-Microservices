@@ -1,8 +1,8 @@
 package de.wirschiffendas.motor_analyzser
 
+import org.json.JSONObject
+
 data class Configuration(
-    val request_id: String,
-    val category_liquid: Map<String, String>,
+    val request_id: Int,
     val category_motor: Map<String, String>,
-    val category_software: Map<String, String>
 )

@@ -27,10 +27,10 @@ java -jar build/libs/motor_analyzer-0.0.1-SNAPSHOT.jar
 docker build -t motor_analyzer -f docker/Dockerfile .
 
 # # Run Docker Image
-docker run -p 8081:8081 motor_analyzer
+docker run -p 8082:8082 motor_analyzer
 ```
 
-- Endoint: `http://localhost:8081/test` should be available 
+- Endoint: `http://localhost:8082/test` should be available 
 
 
 ## Usage
@@ -39,13 +39,13 @@ docker run -p 8081:8081 motor_analyzer
 
 ```bash
 # Check if server is running
-curl localhost:8080/healthCheck
+curl localhost:8082/healthCheck
 
 # Start Kafka Consumer
-curl localhost:8080/startConsumingKafka
+curl localhost:8082/startConsumingKafka
 
 # Simulate Kafka Topic
-curl localhost:8080/simulateNewConfig
+curl localhost:8082/simulateNewConfig
 ```
 
 Debugging via Server logs. (Client wont display any data.)

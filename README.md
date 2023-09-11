@@ -36,7 +36,8 @@ Florian Weber & Thomas Jonas
     - Nano Services
     - Shared libraries (something we have with our 3 split, good for discussion)
     - Health check endpoint (UI regulary checks if services are up ? Is it necessary when using kafka?)
-
+- [ ] Praesentation erstellen
+- [ ] Handout erstellen HOCHLADEN!
 
 **HIGH-LEVEL**
 

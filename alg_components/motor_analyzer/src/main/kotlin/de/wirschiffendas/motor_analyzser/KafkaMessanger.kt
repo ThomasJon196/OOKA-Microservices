@@ -48,7 +48,7 @@ class KafkaMessanger() {
         producer.close()
     }
 
-    fun produce_statusmessage(requestId: Int, equipmentName: String, status: String) {
+    fun produce_statusmessage(requestId: String, equipmentName: String, status: String) {
         /*
         Write status of equipment to kafka topic.
         */
@@ -103,7 +103,7 @@ class KafkaMessanger() {
 
                     // Parse json to Configuration
                     val json = JSONObject(record.value())
-                    val request_id = json.getInt("request_id")
+                    val request_id = json.getString("request_id")
                     val category_motor = json.getJSONObject("category_motor")
                     val configuration =
                             Configuration(
@@ -132,7 +132,7 @@ class KafkaMessanger() {
         return props
     }
 
-    fun buildKafkaResponse(requestId: Int, equipmentName: String, equipmentStatus: String): String {
+    fun buildKafkaResponse(requestId: String, equipmentName: String, equipmentStatus: String): String {
         val config = JSONObject()
         config.put("request_id", requestId)
 

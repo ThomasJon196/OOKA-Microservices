@@ -14,7 +14,7 @@ public class ConfigurationBuilder {
 
     public static String buildConfig(Map<String, ComboBox> configuration) {
         JSONObject config = new JSONObject();
-        config.append("request_id", UUID.randomUUID());
+        config.put("request_id", String.valueOf(UUID.randomUUID())); 
 
         Map<String, String> map_liquid = new HashMap<>();
         map_liquid.put("oil", getValue(configuration, Test.OIL));

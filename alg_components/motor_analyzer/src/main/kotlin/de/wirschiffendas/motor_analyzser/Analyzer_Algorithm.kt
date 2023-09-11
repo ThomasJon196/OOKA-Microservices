@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class MotorAnalyzer(val status_notification_fun: (Int, String, String) -> Unit = { _, _, _ -> }) {
+class MotorAnalyzer(val status_notification_fun: (String, String, String) -> Unit = { _, _, _ -> }) {
     val logger: Logger = LoggerFactory.getLogger(MotorAnalyzer::class.java)
 
     // Execute analysis for each equipment in parallel via coroutines
@@ -31,7 +31,7 @@ class MotorAnalyzer(val status_notification_fun: (Int, String, String) -> Unit =
 
 class GearboxAnalyzer(
         val equipmentName: String,
-        val status_notification_fun: (id: Int, equipmentName: String, status: String) -> Unit,
+        val status_notification_fun: (id: String, equipmentName: String, status: String) -> Unit,
         val logger: Logger
 ) {
     /* Simulated analyzer. Would contain complex algorithm. */
@@ -60,7 +60,7 @@ class GearboxAnalyzer(
 
 class EngineAnalyzer(
         val equipmentName: String,
-        val status_notification_fun: (id: Int, equipmentName: String, status: String) -> Unit,
+        val status_notification_fun: (id: String, equipmentName: String, status: String) -> Unit,
         val logger: Logger
 ) {
     /* Simulated analyzer. Would contain complex algorithm. */
@@ -89,7 +89,7 @@ class EngineAnalyzer(
 
 class StartingSystemAnalyzer(
         val equipmentName: String,
-        val status_notification_fun: (id: Int, equipmentName: String, status: String) -> Unit,
+        val status_notification_fun: (id: String, equipmentName: String, status: String) -> Unit,
         val logger: Logger
 ) {
     /* Simulated analyzer. Would contain complex algorithm. */

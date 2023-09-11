@@ -16,10 +16,15 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import de.hbrs.ConfigurationBuilder;
+import de.hbrs.KafkaControl;
+import de.hbrs.RestAPI;
 import de.hbrs.data.entity.State;
-import de.hbrs.data.entity.Tests;
+import de.hbrs.data.entity.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @PageTitle("Analyse")
 @Route(value = "analyse")
@@ -29,10 +34,10 @@ public class AnalyseView extends Div {
 
     public AnalyseView() {
         addClassName("analyse-view");
-
         add(createHeader());
         add(createConfigurationLayout());
         createAnalyseLayout();
+        setupResponseListener();
     }
 
     private Component createHeader() {
@@ -41,21 +46,20 @@ public class AnalyseView extends Div {
         return layout;
     }
 
-    ComboBox comboBox_oil;
-    ComboBox comboBox_fuel;
-    ComboBox comboBox_monitoring;
-    ComboBox comboBox_gearbox;
+    private Map<String, ComboBox> configurationComboBoxes = new HashMap<>();
+    private Map<Test, State> testStates = new HashMap<>();
 
     private Component createConfigurationLayout() {
         Div container = new Div(new H3("Konfiguration wählen:"));
 
-        // comboboxes
+        // configuration comboboxes
         FormLayout formLayout = new FormLayout();
-        comboBox_oil = new ComboBox("Oil System", "Oil replenishment system", "diverter valve for duplex filter");
-        comboBox_fuel = new ComboBox("Fuel System", "diverter valve for fuel filter", "monitoring fuel leakage");
-        comboBox_monitoring = new ComboBox("Monitoring/Control System", "BlueVision", "New Generation");
-        comboBox_gearbox = new ComboBox("Gearbox Options", "Reverse reduction gearbox", "el. actuated", "gearbox mounts", "trolling mode for dead-slow propulsion", "free auxiliary PTO", "hydraulic pump drives");
-        formLayout.add(comboBox_oil, comboBox_fuel, comboBox_monitoring, comboBox_gearbox);
+        for (Test test : Test.values()) {
+            ComboBox configItem = new ComboBox(test.getDescription(), test.getConfigurations());
+            configurationComboBoxes.put(test.name(), configItem);
+
+            formLayout.add(configItem);
+        }
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
@@ -83,7 +87,18 @@ public class AnalyseView extends Div {
         Button start = new Button("Analyse starten");
         start.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         start.addClickListener(buttonClickEvent -> {
-            RestAPI.sendAnchorStart(comboBox_oil.getValue().toString(), comboBox_fuel.getValue().toString(), comboBox_monitoring.getValue().toString(), comboBox_gearbox.getValue().toString());
+
+            // check empty configuration
+            for (ComboBox box : configurationComboBoxes.values()) {
+                String value = (String) box.getValue();
+                if (value == null) {
+                    Notification.show("Die Konfiguration muss vor der Analyse vollständig ausgefüllt sein.");
+                    return;
+                }
+            }
+
+            String config = ConfigurationBuilder.buildConfig(configurationComboBoxes);
+            KafkaControl.distributeConfiguration(config);
             Notification.show("Analyse gestartet.");
         });
 
@@ -98,20 +113,49 @@ public class AnalyseView extends Div {
         statusElementContainer.setWidth("650px");
         statusElementContainer.getStyle().set("margin", "0 auto");
         statusElementContainer.setAlignSelf(FlexComponent.Alignment.CENTER);
-        statusElementContainer.setAlignItems(FlexComponent.Alignment.CENTER);
-        statusElementContainer.setAlignItems(FlexComponent.Alignment.STRETCH);
+        //statusElementContainer.setAlignItems(FlexComponent.Alignment.CENTER);
+        statusElementContainer.setAlignItems(FlexComponent.Alignment.START);
         //statusElementContainer.setPadding(true);
         //statusElementContainer.getStyle().set("background-color", "gray");
         //statusElementContainer.setAlignItems(FlexComponent.Alignment.STRETCH);
 
-        for (Tests test : Tests.values()) {
-            statusElementContainer.add(createAnalyseItem(test.getTestID(), test.getDescription(), test.getState()));
+        for (Test test : Test.values()) {
+            testStates.put(test, State.NOT_STARTED);
+            statusElementContainer.add(createAnalyseItem(test, State.NOT_STARTED));
         }
-
         this.add(statusElementContainer);
 
         this.add(new Hr());
         this.add(new Text("Total: okay"));
+    }
+
+    private HorizontalLayout createAnalyseItem(Test test, State state) {
+        HorizontalLayout container = new HorizontalLayout();
+        container.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+        container.setWidthFull();
+        container.getStyle().set("margin-bottom", "1px solid");
+        container.addClassName(LumoUtility.BorderColor.CONTRAST_30);
+
+        Span taskNumber = new Span(String.valueOf(test.getTestID()));
+        //taskNumber.getStyle().set("margin-right", "15px");
+
+        Text descriptionElement = new Text(test.getDescription());
+
+        Span statusHolder = new Span(state.toString());
+        statusHolder.getElement().getThemeList().add("badge " + state.getCssStyle());
+        statusHolder.setMinWidth("150px");
+
+        container.add(taskNumber, descriptionElement, statusHolder);
+        return container;
+    }
+
+    private void setupResponseListener() {
+        KafkaControl.startStatusConsumer(responseString -> {
+            ConfigurationBuilder.ConfigurationResponse response = ConfigurationBuilder.readResponse(responseString);
+            for (AnalyseView av : AnalyseView.getLoadedVaadinUIs()) {
+                av.updateTestStatus(response.equipmentName(), response.equipmentState());
+            }
+        });
     }
 
     private static ArrayList<AnalyseView> loadedUIs = new ArrayList<>();
@@ -132,43 +176,23 @@ public class AnalyseView extends Div {
         return loadedUIs;
     }
 
-    public void updateStatus(int id, State state) {
-        for (Tests test : Tests.values()) {
-            if (test.getTestID() == id) {
-                test.setState(state);
+    public void updateTestStatus(String equipmentName, State state) {
+        Test test = Test.getByName(equipmentName);
+        if (test != null) {
+            testStates.put(test, state);
+            rebuildAnalyserTable();
+        }
+    }
+
+    private void rebuildAnalyserTable() {
+        getUI().ifPresent(ui -> ui.access(() -> {
+            statusElementContainer.removeAll();
+
+            for (Test test : Test.values()) {
+                statusElementContainer.add(createAnalyseItem(test, testStates.get(test)));
             }
-        }
-
-        buildData();
-    }
-
-    private void buildData() {
-        statusElementContainer.removeAll();
-
-        for (Tests test : Tests.values()) {
-            statusElementContainer.add(createAnalyseItem(test.getTestID(), test.getDescription(), test.getState()));
-        }
-    }
-
-    private HorizontalLayout createAnalyseItem(int number, String description, State state) {
-        HorizontalLayout container = new HorizontalLayout();
-        container.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-        container.setWidthFull();
-        container.getStyle().set("margin-bottom", "1px solid");
-        container.addClassName(LumoUtility.BorderColor.CONTRAST_30);
-
-        Span taskNumber = new Span(String.valueOf(number));
-        //taskNumber.getStyle().set("margin-right", "15px");
-
-        Text descriptionElement = new Text(description);
-        Span statusHolder = new Span(state.toString());
-        statusHolder.getElement().getThemeList().add("badge " + state.getCssStyle());
-
-        container.add(taskNumber, descriptionElement, statusHolder);
-
-        return container;
-
-
+            ui.push();
+        }));
     }
 
 }

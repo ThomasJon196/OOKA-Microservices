@@ -27,10 +27,10 @@ java -jar build/libs/motor_analyzer-0.0.1-SNAPSHOT.jar
 docker build -t motor_analyzer -f docker/Dockerfile .
 
 # # Run Docker Image
-docker run -p 8081:8081 motor_analyzer
+docker run -p 8083:8083 motor_analyzer
 ```
 
-- Endoint: `http://localhost:8081/test` should be available 
+- Endoint: `http://localhost:8083/test` should be available 
 
 
 ## Usage

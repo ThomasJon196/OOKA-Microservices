@@ -17,8 +17,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.hbrs.ConfigurationBuilder;
+import de.hbrs.ConfigurationManager;
 import de.hbrs.KafkaControl;
-import de.hbrs.RestAPI;
 import de.hbrs.data.entity.State;
 import de.hbrs.data.entity.Test;
 
@@ -57,28 +57,66 @@ public class AnalyseView extends Div {
         for (Test test : Test.values()) {
             ComboBox configItem = new ComboBox(test.getDescription(), test.getConfigurations());
             configurationComboBoxes.put(test.name(), configItem);
-
             formLayout.add(configItem);
         }
 
-        HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.addClassName("button-layout");
-
-        Button cancel = new Button("Abbrechen");
-        Button save = new Button("Speichern");
-        Button load = new Button("Gespeicherte Konfiguration laden");
-
-        load.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        save.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-        cancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        buttonLayout.add(load, save, cancel);
-
         container.add(formLayout);
-        container.add(buttonLayout);
+        container.add(getButtonLayout());
         return container;
     }
 
+    private Component getButtonLayout() {
+        HorizontalLayout buttonLayout = new HorizontalLayout();
+        buttonLayout.addClassName("button-layout");
+
+        Button clear = new Button("Leeren");
+        Button save = new Button("Speichern");
+        Button load = new Button("Gespeicherte Konfiguration laden");
+
+        save.addClickListener(buttonClickEvent -> {
+            if (!isConfigValid()) {
+                return;
+            }
+
+            if (ConfigurationManager.saveConfig(configurationComboBoxes)) {
+                Notification.show("Konfiguration erfolgreich gespeichert!");
+            } else {
+                Notification.show("Konfiguration konnte nicht gespeichert werden!");
+            }
+        });
+
+        load.addClickListener(buttonClickEvent -> {
+            if (ConfigurationManager.readConfig(configurationComboBoxes)) {
+                Notification.show("Konfiguration erfolgreich geladen!");
+            } else {
+                Notification.show("Konfiguration konnte nicht geladen werden!");
+            }
+        });
+
+        clear.addClickListener(buttonClickEvent -> {
+            configurationComboBoxes.values().forEach(comboBox -> comboBox.setValue(null));
+            Notification.show("Felder geleert!");
+        });
+
+        load.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        save.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+        clear.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        buttonLayout.add(load, save, clear);
+        return buttonLayout;
+    }
+
     VerticalLayout statusElementContainer = new VerticalLayout();
+
+    private boolean isConfigValid() {
+        for (ComboBox box : configurationComboBoxes.values()) {
+            String value = (String) box.getValue();
+            if (value == null) {
+                Notification.show("Fehler: Die Konfiguration muss vollständig ausgefüllt sein!");
+                return false;
+            }
+        }
+        return true;
+    }
 
     private void createAnalyseLayout() {
         Div container = new Div(new H3("Analyse:"));
@@ -89,12 +127,8 @@ public class AnalyseView extends Div {
         start.addClickListener(buttonClickEvent -> {
 
             // check empty configuration
-            for (ComboBox box : configurationComboBoxes.values()) {
-                String value = (String) box.getValue();
-                if (value == null) {
-                    Notification.show("Die Konfiguration muss vor der Analyse vollständig ausgefüllt sein.");
-                    return;
-                }
+            if (!isConfigValid()) {
+                return;
             }
 
             String config = ConfigurationBuilder.buildConfig(configurationComboBoxes);
@@ -113,20 +147,24 @@ public class AnalyseView extends Div {
         statusElementContainer.setWidth("650px");
         statusElementContainer.getStyle().set("margin", "0 auto");
         statusElementContainer.setAlignSelf(FlexComponent.Alignment.CENTER);
-        //statusElementContainer.setAlignItems(FlexComponent.Alignment.CENTER);
         statusElementContainer.setAlignItems(FlexComponent.Alignment.START);
-        //statusElementContainer.setPadding(true);
-        //statusElementContainer.getStyle().set("background-color", "gray");
-        //statusElementContainer.setAlignItems(FlexComponent.Alignment.STRETCH);
 
         for (Test test : Test.values()) {
             testStates.put(test, State.NOT_STARTED);
-            statusElementContainer.add(createAnalyseItem(test, State.NOT_STARTED));
         }
-        this.add(statusElementContainer);
+        buildStatusElements();
 
-        this.add(new Hr());
-        this.add(new Text("Total: okay"));
+        this.add(statusElementContainer);
+    }
+
+    private void buildStatusElements() {
+        for (Test test : Test.values()) {
+            statusElementContainer.add(createAnalyseItem(test, testStates.get(test)));
+        }
+        // final result
+        statusElementContainer.add(new Hr());
+        boolean success = testStates.values().stream().allMatch(state -> state == State.SUCCESS);
+        statusElementContainer.add(createAnalyseItem(null, (success) ? State.SUCCESS : State.FAILED));
     }
 
     private HorizontalLayout createAnalyseItem(Test test, State state) {
@@ -136,10 +174,10 @@ public class AnalyseView extends Div {
         container.getStyle().set("margin-bottom", "1px solid");
         container.addClassName(LumoUtility.BorderColor.CONTRAST_30);
 
-        Span taskNumber = new Span(String.valueOf(test.getTestID()));
+        Span taskNumber = new Span(String.valueOf((test != null) ? test.getTestID() : "GESAMTERGEBNIS"));
         //taskNumber.getStyle().set("margin-right", "15px");
 
-        Text descriptionElement = new Text(test.getDescription());
+        Text descriptionElement = new Text((test != null) ? test.getDescription() : "");
 
         Span statusHolder = new Span(state.toString());
         statusHolder.getElement().getThemeList().add("badge " + state.getCssStyle());
@@ -187,10 +225,7 @@ public class AnalyseView extends Div {
     private void rebuildAnalyserTable() {
         getUI().ifPresent(ui -> ui.access(() -> {
             statusElementContainer.removeAll();
-
-            for (Test test : Test.values()) {
-                statusElementContainer.add(createAnalyseItem(test, testStates.get(test)));
-            }
+            buildStatusElements();
             ui.push();
         }));
     }

@@ -20,14 +20,14 @@ gradle wrapper
 
 ```bash
 # Deploy via java
-java -jar build/libs/motor_analyzer-0.0.1-SNAPSHOT.jar
+java -jar build/libs/exhaust_analyzer-0.0.1-SNAPSHOT.jar
 
 # Deploy via Docker
 # # Build Docker Image
-docker build -t motor_analyzer -f docker/Dockerfile .
+docker build -t exhaust_analyzer -f docker/Dockerfile .
 
 # # Run Docker Image
-docker run -p 8083:8083 motor_analyzer
+docker run -p 8083:8083 exhaust_analyzer
 ```
 
 - Endoint: `http://localhost:8083/test` should be available 

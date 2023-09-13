@@ -27,11 +27,14 @@ Florian Weber & Thomas Jonas
 - [x] Extrahiere wiederverwendbare Komponenten aus urspruenglichem Projekt (Thomas)
 - [x] Implementierung der Analyser Komponenten - Java, Notfall Python (Thomas)
 - [x] Kafka (Florian)
-- [ ] UI + Griechisches Olivenoel(Florian)
-- [ ] Diskutieren: Crnkovic Komponentenmodell Framework anwenden?
+- [x] UI + Griechisches Olivenoel(Florian)
+- [x] Anforderungen durchgehen
+- [ ] Alle Technologien verstehen. (Austauschen)
+- [ ] Diskutieren: Crnkovic Komponentenmodell Framework/ MS Taxonomie anwenden?
 - [ ] Arch Smell und Anti Pattern: 5 priorisierte, davon 3 umgesetzte Loesungen aufzeigen
   - Erste Sammlung:
     - Independent deployability
+    - Too many standards
     - Isolation of failures
     - Decentralization of business logic
     - Wrong Cut: Design Anti Pattern

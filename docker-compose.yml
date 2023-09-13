@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  motor-analyzer:
+    image: motor_analyzer:1.0
+    healthcheck:
+      test: curl --fail http://localhost:8081/healthCheck || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  liquid-analyzer:
+    image: liquid_analyzer:1.0
+    healthcheck:
+      test: curl --fail http://localhost:8083/healthCheck || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  exhaust-analyzer:
+    image: exhaust_analyzer:1.0
+    healthcheck:
+      test: curl --fail http://localhost:8082/healthCheck || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+  # autoheal:
+  #   restart: always
+  #   image: willfarrell/autoheal
+  #   environment:
+  #     - AUTOHEAL_CONTAINER_LABEL=all
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock

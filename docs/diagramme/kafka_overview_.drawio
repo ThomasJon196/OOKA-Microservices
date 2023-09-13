@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="PI8ypTHADLfvJd1oJ4ux" name="Page-1">
-        <mxGraphModel dx="1510" dy="815" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1563" dy="531" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -8,7 +8,7 @@
                     <mxGeometry x="285" y="95" width="270" height="660" as="geometry"/>
                 </mxCell>
                 <mxCell id="107" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="857.5" y="40" width="410" height="330" as="geometry"/>
+                    <mxGeometry x="857.5" y="40" width="410" height="250" as="geometry"/>
                 </mxCell>
                 <mxCell id="93" value="Liquid-&lt;br&gt;AnalKomp" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="592.5" y="180" width="147.5" height="120" as="geometry"/>
@@ -95,13 +95,13 @@
                     <mxGeometry x="632.5" y="650" width="60" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="50" value="running, failed, ready, ~not started&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-                    <mxGeometry x="890" y="575" width="130" height="80" as="geometry"/>
+                    <mxGeometry x="890" y="905" width="130" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="52" value="Circuit Breaker" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="890" y="540" width="120" height="60" as="geometry"/>
+                    <mxGeometry x="890" y="870" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="53" value="UI weiß nichts von konkreten MS welcher die Nachricht bearbeitet. somit kann der status nicht abgefragt werden." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-                    <mxGeometry x="865" y="630" width="170" height="80" as="geometry"/>
+                    <mxGeometry x="865" y="960" width="170" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="59" value="paralel Reihenfolge" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="95" y="950" width="130" height="30" as="geometry"/>
@@ -294,14 +294,17 @@
                 <mxCell id="133" value="Configuration-Skipper" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="380" y="95" width="80" height="45" as="geometry"/>
                 </mxCell>
-                <mxCell id="135" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://assets.stickpng.com/images/62a879da3048e459144d038b.png;" parent="1" vertex="1">
-                    <mxGeometry x="451.98" y="150" width="50.52" height="55" as="geometry"/>
-                </mxCell>
                 <mxCell id="136" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://vaadin.com/images/trademark/PNG/VaadinLogomark_RGB_1000x1000.png;" parent="1" vertex="1">
                     <mxGeometry x="95" y="380" width="30" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="138" value="Falls Kafka MS nicht erreichbar erreichtbar ist, wie sollen die MS damit umgehen?&lt;br&gt;Warten? Oder Abbruch?" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="600" y="720" width="170" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="135" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://assets.stickpng.com/images/62a879da3048e459144d038b.png;" parent="1" vertex="1">
+                    <mxGeometry x="451.98" y="150" width="50.52" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="139" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Apache_kafka.svg/1200px-Apache_kafka.svg.png;" vertex="1" parent="1">
+                    <mxGeometry x="510" y="110" width="31.16" height="50.63" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

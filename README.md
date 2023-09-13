@@ -8,6 +8,8 @@
   - [Projekt Setup](#projekt-setup)
   - [Deployment](#deployment)
   - [Lessons learned](#lessons-learned)
+  - [Aussicht](#aussicht)
+  - [Verbesserungsmoeglichkeiten](#verbesserungsmoeglichkeiten)
 
 ## Semesterprojekt
 
@@ -103,3 +105,10 @@ Beispielhaft:
 - Kotlin-Gradle
   - REST Server
   - Data Classes and DB support
+
+
+## Aussicht
+
+## Verbesserungsmoeglichkeiten
+
+- Persistierung der Konfiguration

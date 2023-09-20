@@ -31,7 +31,7 @@ Florian Weber & Thomas Jonas
 - [x] Anforderungen durchgehen
 - [ ] Alle Technologien verstehen. (Austauschen)
 - [ ] Diskutieren: Crnkovic Komponentenmodell Framework/ MS Taxonomie anwenden?
-- [ ] Arch Smell und Anti Pattern: 5 priorisierte, davon 3 umgesetzte Loesungen aufzeigen
+- [x] Arch Smell und Anti Pattern: 5 priorisierte, davon 3 umgesetzte Loesungen aufzeigen
   - Erste Sammlung:
     - Independent deployability
     - Too many standards
@@ -47,8 +47,8 @@ Florian Weber & Thomas Jonas
 **HIGH-LEVEL**
 
 - [x] **4: Modellierung MS Architektur**
-- [ ] **5: Umsetzung Microservices**
-- [ ] **6.1: Erweiterung**
+- [x] **5: Umsetzung Microservices**
+- [x] **6.1: Erweiterung**
     
     Message/Queue (Kafka), Containerization (Docker), Circuit Breaker (Resilijence4j), FaaS (Knative)
 - [ ] **Persistierung**
@@ -57,11 +57,12 @@ Florian Weber & Thomas Jonas
 
 **Praesentation: (20 min)**
 
-- [ ] Fachliche Anforderung (Use Cases)
+- [x] Fachliche Anforderung (Use Cases)
 - [ ] Software-Architektur - 4-Sichtenmodell
   - [ ] UML
-  - [ ] Entwurfsentscheidungen kommentieren (arc42-template als Orientierung)
-- [ ] Code Walkthrough (relevante Passagen vorbereiten)
+  - [x] Entwurfsentscheidungen kommentieren (arc42-template als Orientierung)
+- [x] Code Walkthrough (relevante Passagen vorbereiten)
+  - [x] Thomas Teil
 - [ ] Demonstration des Prototypen
 - [ ] Fazit: Lessons Learned, Ausblick, aktuelle Restriktionen
 
@@ -100,7 +101,35 @@ Beispielhaft:
 
 ## Deployment
 
-- Wie startet man das Projekt? ggf. Scripte schreiben.
+0. Connect to HBRS-VPN to enable access to the kafka-cluster.
+1. Execute services in seperate shells/processes.
+2. Start kafka-consumer in each algorithm component.
+3. Navigate to GUI and start the analysis.
+
+
+1. Start services
+
+```bash
+# In each alg_comp directory run:
+./gradlew bootRun
+
+# Deploy analysis GUI
+bash ./mvnw
+
+```
+
+2. 
+
+To start the kafka-consumer in each algorithm component,\
+their `/startConsuming`-endpoint has to be called explicitly.
+
+```bash
+# Check if server is up
+curl 'http://localhost:8081/healthCheck'
+
+# Start consuming messages from kafka topic
+curl 'http://localhost:8081/startConsumingKafka'
+```
 
 
 ## Lessons learned

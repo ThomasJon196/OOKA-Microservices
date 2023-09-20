@@ -22,6 +22,20 @@ class MessageController() {
 
     @GetMapping("/healthCheck") fun test() = "I am alive!"
 
+    @GetMapping("/startConsumingKafka")
+    fun startConsumingKafka(): ResponseEntity<String> {
+        logger.info("Starting kafka consumer.")
+
+        // Init KafkaMessanger
+        val kafkaMessanger = KafkaMessanger()
+
+        // Init Analyzer
+        val analyser = ExhaustAnalyzer(kafkaMessanger::produce_statusmessage)
+        kafkaMessanger.consume(topic = "ooka_jonasweber_exhaust", analyser::executeAnalysis)
+
+        return ResponseEntity("Kafka Consumer running.", HttpStatus.OK)
+    }
+
     @GetMapping("/simulateNewConfig")
     fun startProducingKafka(): ResponseEntity<String> {
         logger.info("Started Kafka producer.")
@@ -39,19 +53,5 @@ class MessageController() {
         kafkaMessanger.produceTestConfig(config_message.toString())
 
         return ResponseEntity("Kafka Producer executed.", HttpStatus.OK)
-    }
-
-    @GetMapping("/startConsumingKafka")
-    fun startConsumingKafka(): ResponseEntity<String> {
-        logger.info("Starting kafka consumer.")
-
-        // Init KafkaMessanger
-        val kafkaMessanger = KafkaMessanger()
-
-        // Init Analyzer
-        val analyser = ExhaustAnalyzer(kafkaMessanger::produce_statusmessage)
-        kafkaMessanger.consume(topic = "ooka_jonasweber_exhaust", analyser::executeAnalysis)
-
-        return ResponseEntity("Kafka Consumer running.", HttpStatus.OK)
     }
 }

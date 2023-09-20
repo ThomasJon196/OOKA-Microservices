@@ -1,4 +1,4 @@
-package de.hbrs.data.entity;
+package de.hbrs.model;
 
 public enum State {
 

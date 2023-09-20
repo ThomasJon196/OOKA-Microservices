@@ -1,7 +1,6 @@
-package de.hbrs;
+package de.hbrs.control;
 
 import com.vaadin.flow.component.combobox.ComboBox;
-import de.hbrs.data.entity.Test;
 
 import java.io.*;
 import java.util.Map;

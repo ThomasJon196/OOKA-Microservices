@@ -1,6 +1,4 @@
-package de.hbrs.data.entity;
-
-import com.vaadin.flow.component.combobox.ComboBox;
+package de.hbrs.model;
 
 public enum Test {
 

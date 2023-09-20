@@ -1,4 +1,4 @@
-package de.hbrs.views.analyse;
+package de.hbrs.view;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
@@ -16,11 +16,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import de.hbrs.ConfigurationBuilder;
-import de.hbrs.ConfigurationManager;
-import de.hbrs.KafkaControl;
-import de.hbrs.data.entity.State;
-import de.hbrs.data.entity.Test;
+import de.hbrs.control.ConfigurationBuilder;
+import de.hbrs.control.ConfigurationManager;
+import de.hbrs.control.KafkaControl;
+import de.hbrs.model.State;
+import de.hbrs.model.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,16 +125,9 @@ public class AnalyseView extends Div {
         Button start = new Button("Analyse starten");
         start.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         start.addClickListener(buttonClickEvent -> {
-
-            // check empty configuration
-            if (!isConfigValid()) {
-                return;
-            }
-
-            String config = ConfigurationBuilder.buildConfig(configurationComboBoxes);
-            KafkaControl.distributeConfiguration(config);
-            Notification.show("Analyse gestartet.");
+            startAnalyse();
         });
+
 
         container.add(start);
         this.add(container);
@@ -155,6 +148,17 @@ public class AnalyseView extends Div {
         buildStatusElements();
 
         this.add(statusElementContainer);
+    }
+
+    private void startAnalyse() {
+        // check empty configuration
+        if (!isConfigValid()) {
+            return;
+        }
+
+        String config = ConfigurationBuilder.buildConfig(configurationComboBoxes);
+        KafkaControl.distributeConfiguration(config);
+        Notification.show("Analyse gestartet.");
     }
 
     private void buildStatusElements() {
@@ -179,11 +183,20 @@ public class AnalyseView extends Div {
 
         Text descriptionElement = new Text((test != null) ? test.getDescription() : "");
 
+        Button retryButton = null;
+        if (state == State.FAILED && test == null) {
+            retryButton = new Button("Wiederholen");
+            retryButton.addClickListener(buttonClickEvent -> startAnalyse());
+        }
+
         Span statusHolder = new Span(state.toString());
         statusHolder.getElement().getThemeList().add("badge " + state.getCssStyle());
         statusHolder.setMinWidth("150px");
 
         container.add(taskNumber, descriptionElement, statusHolder);
+        if (retryButton != null) {
+            container.add(retryButton);
+        }
         return container;
     }
 

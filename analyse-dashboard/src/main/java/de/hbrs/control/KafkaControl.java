@@ -1,4 +1,4 @@
-package de.hbrs;
+package de.hbrs.control;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.consumer.*;
@@ -87,7 +87,7 @@ public class KafkaControl {
             consumer.subscribe(Arrays.asList("ooka_jonasweber_status"));
 
             while (true) {
-                ConsumerRecords<String, String> records = consumer.poll(100);
+                ConsumerRecords<String, String> records = consumer.poll(1000);
                 for (ConsumerRecord<String, String> record : records) {
                     messageConsumer.accept(record.value());
                     //System.out.printf("offset = %d, key = %s, value = %s\n", record.offset(), record.key(), record.value());

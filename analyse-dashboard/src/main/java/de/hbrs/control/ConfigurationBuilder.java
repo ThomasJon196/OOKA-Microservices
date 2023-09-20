@@ -1,8 +1,8 @@
-package de.hbrs;
+package de.hbrs.control;
 
 import com.vaadin.flow.component.combobox.ComboBox;
-import de.hbrs.data.entity.State;
-import de.hbrs.data.entity.Test;
+import de.hbrs.model.State;
+import de.hbrs.model.Test;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,7 +14,8 @@ public class ConfigurationBuilder {
 
     public static String buildConfig(Map<String, ComboBox> configuration) {
         JSONObject config = new JSONObject();
-        config.put("request_id", String.valueOf(UUID.randomUUID())); 
+        //config.put("request_id", String.valueOf(UUID.randomUUID()));
+        config.put("request_id", String.valueOf("80cc4cac-b6e2-4430-8373-d49f8904cf12"));
 
         Map<String, String> map_liquid = new HashMap<>();
         map_liquid.put("oil", getValue(configuration, Test.OIL));

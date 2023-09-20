@@ -1,8 +1,8 @@
-package de.hbrs;
+package de.hbrs.control;
 
 import com.vaadin.flow.component.combobox.ComboBox;
-import de.hbrs.data.entity.State;
-import de.hbrs.views.analyse.AnalyseView;
+import de.hbrs.model.State;
+import de.hbrs.view.AnalyseView;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;

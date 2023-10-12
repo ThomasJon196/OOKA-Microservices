@@ -17,7 +17,7 @@ by Florian Weber & Thomas Jonas
 
 ## Application
 
-![](2023-10-12-19-22-32.png)
+![](./docs/diagramme/GUI_Screenshot.png)
 
 
 ## Architecture

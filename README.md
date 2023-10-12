@@ -17,9 +17,8 @@ by Florian Weber & Thomas Jonas
 
 ## Application
 
-Video link here...
-
 ![](2023-10-12-19-22-32.png)
+
 
 ## Architecture
 

@@ -1,86 +1,88 @@
 # Migration einer monolithischen Architektur auf Microservices
 
 - [Migration einer monolithischen Architektur auf Microservices](#migration-einer-monolithischen-architektur-auf-microservices)
-  - [Semesterprojekt](#semesterprojekt)
-    - [Aufgaben](#aufgaben)
-    - [weitere Infos](#weitere-infos)
+  - [Application](#application)
+  - [Architecture](#architecture)
+    - [Context View](#context-view)
+    - [Development View](#development-view)
+    - [Sequence View](#sequence-view)
+    - [Deployment View](#deployment-view)
+    - [Context View: Kafka Communication Channels](#context-view-kafka-communication-channels)
   - [Projekt Struktur](#projekt-struktur)
   - [Projekt Setup](#projekt-setup)
   - [Deployment](#deployment)
   - [Lessons learned](#lessons-learned)
-  - [Aussicht](#aussicht)
-  - [Verbesserungsmoeglichkeiten](#verbesserungsmoeglichkeiten)
 
-## Semesterprojekt
+by Florian Weber & Thomas Jonas
 
-Florian Weber & Thomas Jonas
+## Application
 
+Video link here...
 
-### Aufgaben
+![](2023-10-12-19-22-32.png)
 
-> Entwicklung mit **arc42-Template** dokumentieren -> Zur Abbleitung des Vortrags
+## Architecture
 
-**TODOs**
+The following 5 diagrams describe:
+- Context View: High level
+- Development View
+- Sequence View
+- Deployment View
+- Context View: Kafka Communication Channels
 
-- [x] Konfigurationsobject Format definieren (.json)
-- [x] Schnittstellendefinitionen
-- [x] Extrahiere wiederverwendbare Komponenten aus urspruenglichem Projekt (Thomas)
-- [x] Implementierung der Analyser Komponenten - Java, Notfall Python (Thomas)
-- [x] Kafka (Florian)
-- [x] UI + Griechisches Olivenoel(Florian)
-- [x] Anforderungen durchgehen
-- [ ] Alle Technologien verstehen. (Austauschen)
-- [ ] Diskutieren: Crnkovic Komponentenmodell Framework/ MS Taxonomie anwenden?
-- [x] Arch Smell und Anti Pattern: 5 priorisierte, davon 3 umgesetzte Loesungen aufzeigen
-  - Erste Sammlung:
-    - Independent deployability
-    - Too many standards
-    - Isolation of failures
-    - Decentralization of business logic
-    - Wrong Cut: Design Anti Pattern
-    - Nano Services
-    - Shared libraries (something we have with our 3 split, good for discussion)
-    - Health check endpoint (UI regulary checks if services are up ? Is it necessary when using kafka?)
-- [ ] Praesentation erstellen
-- [ ] Handout erstellen HOCHLADEN!
+### Context View
 
-**HIGH-LEVEL**
+![Context View](./docs/diagramme/final/Kontextsicht.png)
 
-- [x] **4: Modellierung MS Architektur**
-- [x] **5: Umsetzung Microservices**
-- [x] **6.1: Erweiterung**
-    
-    Message/Queue (Kafka), Containerization (Docker), Circuit Breaker (Resilijence4j), FaaS (Knative)
-- [ ] **Persistierung**
+WirSchaffenDas is the system we developed.\
+It uses an external Kafka Broker, and can be accessed by a user via a web browser.
 
-    Ergebnisse (JSON/XML) in Datenbank (PostgreSQL) ablegen.
+### Development View
 
-**Praesentation: (20 min)**
+![Development View](./docs/diagramme/final/Bausteinsicht.png)
 
-- [x] Fachliche Anforderung (Use Cases)
-- [ ] Software-Architektur - 4-Sichtenmodell
-  - [ ] UML
-  - [x] Entwurfsentscheidungen kommentieren (arc42-template als Orientierung)
-- [x] Code Walkthrough (relevante Passagen vorbereiten)
-  - [x] Thomas Teil
-- [ ] Demonstration des Prototypen
-- [ ] Fazit: Lessons Learned, Ausblick, aktuelle Restriktionen
+"WirSchaffenDas" consist of two main components:
+- Analysis GUI
+- Algorithm Components
 
-**ORGA**
+The Analysis GUI is a web application, which can be accessed by a user via a web browser.\
+It is responsible for displaying the results of the analysis.
 
-- [x] Initialles Planning
-- [x] Einteilung in Unteraufgaben & TODOs formulieren. 
-  - (Potentiel ein wenig asynchron arbeiten moeglich)
-  - Orientierung an **Umsetzung der Aufgabenblaetter**
-- [x] Erstelle [arc42](https://arc42.org/overview) template [docs](./docs/arc42/)
-- [x] Extraktion relevanter Kriterien aus Papern.
+The Algorithm Components are responsible for the actual analysis.\
+They are implemented as microservices, and communicate via Kafka.\
+Each Algorithm Component is responsible for one specific analysis algorithm.
 
 
+### Sequence View
 
-### weitere Infos
+![Programm Flow View](docs/diagramme/final/Sequenzdiagramm.png)
 
-- **Bis 10.09** Thema und Gruppe mitteilen -> Alda
-- **Sprechstunde** Do 12-14 Uhr (außer: 01.08. bis 25.8.23) 
+The following sequence diagram shows the program flow of the analysis GUI.\
+The user can select an analysis algorithm, and start the analysis.\
+The analysis GUI then sends a request to the selected algorithm component.\
+The algorithm component then starts consuming messages from the kafka topic.\
+The algorithm component then starts the analysis, and sends the results back to the analysis GUI.\
+The analysis GUI then displays the results to the user.
+
+### Deployment View
+
+![Deployment View](./docs/diagramme/final/verteilungssicht.png)
+
+The following deployment diagram shows the deployment of the analysis GUI and the algorithm components.\
+The analysis GUI is deployed as a web application, and can be accessed by a user via a web browser.\
+The algorithm components are deployed as microservices, and communicate via Kafka.\
+Each algorithm component is deployed as a seperate service, and can be scaled individually.
+
+### Context View: Kafka Communication Channels
+
+![Context View 2](docs/diagramme/final/context-view-final.png)
+
+The following diagram shows the communication channels between the algorithm components and kafka.\
+Each algorithm component consumes messages from a specific kafka topic.\
+Each algorithm component produces messages to a specific kafka topic.\
+The analysis GUI produces messages to a specific kafka topic.\
+The analysis GUI consumes messages from a specific kafka topic.
+
 
 
 ## Projekt Struktur
@@ -113,7 +115,7 @@ Beispielhaft:
 # In each alg_comp directory run:
 ./gradlew bootRun
 
-# Deploy analysis GUI
+# Deploy analysis GUI (in analyse-dashboard directory)
 bash ./mvnw
 
 ```
@@ -137,10 +139,3 @@ curl 'http://localhost:8081/startConsumingKafka'
 - Kotlin-Gradle
   - REST Server
   - Data Classes and DB support
-
-
-## Aussicht
-
-## Verbesserungsmoeglichkeiten
-
-- Persistierung der Konfiguration

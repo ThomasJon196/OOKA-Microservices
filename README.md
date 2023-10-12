@@ -135,6 +135,8 @@ curl 'http://localhost:8081/startConsumingKafka'
 
 ## Lessons learned
 
-- Kotlin-Gradle
-  - REST Server
-  - Data Classes and DB support
+- Importance of `Communication` when planning and executing a project.
+- Complexity of dependency management.
+- Curcuit-breaker integration.
+- Automated deployment.
+- Containerization.
